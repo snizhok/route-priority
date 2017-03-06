@@ -21,10 +21,12 @@ class Route extends IlluminateRoute
     protected function runController()
     {
     	$this->router = app('router');
-        list($class, $method) = explode('@', $this->action['uses']);
+        list($class) = explode('@', $this->action['uses']);
+
+        $this->controller = $this->container->make($class);
         
         return (new ControllerDispatcher($this->container))->dispatch(
-            $this, $this->getController(), $this->getControllerMethod()
+            $this, $this->controller, $this->getControllerMethod()
         );
     }
 	
