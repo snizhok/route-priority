@@ -9,6 +9,8 @@ class RouteCollection extends IlluminateRouteCollection
 	 */
 	protected $comparePriority;
 
+	protected static $routesCached = false;
+	
 	public function __construct()
 	{
 		$this->comparePriority = function($r1, $r2)
@@ -43,9 +45,14 @@ class RouteCollection extends IlluminateRouteCollection
 
 	public function buildRoutesOrder()
 	{
-		uasort($this->allRoutes, $this->comparePriority);
-		foreach ($this->routes as $method => $_tmp) {
+		if (!self::$routesCached && count($this->allRoutes)) {
+		    uasort($this->allRoutes, $this->comparePriority);
+		    foreach ($this->routes as $method => $_tmp) {
 			uasort($this->routes[$method], $this->comparePriority);
+		    }
+		}
+		if (count($this->allRoutes)) {
+		    self::$routesCached = true;
 		}
 	}
 } 
