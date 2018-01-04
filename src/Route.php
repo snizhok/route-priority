@@ -26,7 +26,7 @@ class Route extends IlluminateRoute
         $this->controller = $this->container->make($class);
         
         return (new ControllerDispatcher($this->container))->dispatch(
-            $this, $this->controller, $this->getControllerMethod()
+            $this, $this->getController(), $this->getControllerMethod()
         );
     }
 	
@@ -44,5 +44,7 @@ class Route extends IlluminateRoute
 	public function setPriority($priority)
 	{
 		$this->priority = $priority;
+		
+		return $this;
 	}
 }
